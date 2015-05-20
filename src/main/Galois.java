@@ -11,6 +11,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
+import utils.Methods;
+
 public class Galois {
 
 	public static void main(String[] args) {
@@ -21,57 +23,68 @@ public class Galois {
 		// ops
 		//
 		///////////////////////////////////
-		String str = "abc";
+		ops_1();
 		
-		permu(str);
-//		permu("abcde");
+//		String target = "ブレオ";
+//		String s1 = "オブレ";
+//		String s2 = "レオブ";
+//		String target = "bac";
+//		String s1 = "abc";
+//		String s2 = "bca";
+//
+//		Methods.perm(target, s1, s2);
 		
-		///////////////////////////////////
-		//
-		// ops: 2
-		//
-		///////////////////////////////////
-		Set<String> perm = permutationFinder(str);
-		
-		List<String> list = new ArrayList<String>();
-		
-		Iterator<String> it = perm.iterator();
-		
-		String s = null;
-		
-		while (it.hasNext()) {
-
-			s = it.next();
-			
+//		String str = "abc";
+//		
+//		permu(str);
+////		permu("abcde");
+//		
+//		///////////////////////////////////
+//		//
+//		// ops: 2
+//		//
+//		///////////////////////////////////
+//		Set<String> perm = permutationFinder(str);
+//		
+//		List<String> list = new ArrayList<String>();
+//		
+//		Iterator<String> it = perm.iterator();
+//		
+//		String s = null;
+//		
+//		while (it.hasNext()) {
+//
+//			s = it.next();
+//			
+////			String msg;
+////			msg = String.format(Locale.JAPAN, "[%s : %d] s = %s", Thread
+////					.currentThread().getStackTrace()[1].getFileName(), Thread
+////					.currentThread().getStackTrace()[1].getLineNumber(), s);
+////
+////			System.out.println(msg);
+//			
+//			list.add(s);
+//			
+////			String s = (String) it
+//			
+//		}
+//
+//		// sort
+//		Collections.sort(list);
+//		
+//		for (int i = 0; i < list.size(); i++) {
+//			
+//			s = list.get(i);
+//			
 //			String msg;
 //			msg = String.format(Locale.JAPAN, "[%s : %d] s = %s", Thread
 //					.currentThread().getStackTrace()[1].getFileName(), Thread
 //					.currentThread().getStackTrace()[1].getLineNumber(), s);
 //
 //			System.out.println(msg);
-			
-			list.add(s);
-			
-//			String s = (String) it
-			
-		}
-
-		// sort
-		Collections.sort(list);
-		
-		for (int i = 0; i < list.size(); i++) {
-			
-			s = list.get(i);
-			
-			String msg;
-			msg = String.format(Locale.JAPAN, "[%s : %d] s = %s", Thread
-					.currentThread().getStackTrace()[1].getFileName(), Thread
-					.currentThread().getStackTrace()[1].getLineNumber(), s);
-
-			System.out.println(msg);
-			
-			
-		}
+//			
+//			
+//		}
 		
 		
 		///////////////////////////////////
@@ -90,14 +103,98 @@ public class Galois {
 		
 	}
 
+	public static void ops_1() {
+
+		///////////////////////////////////
+		//
+		// abc/acb
+		//
+		///////////////////////////////////
+		String target = "bac";
+		
+		String s1 = "abc";
+		String s2 = "acb";
+
+		String msg;
+//		msg = String.format(Locale.JAPAN, "[%s : %d] target => %s / result => %s", Thread
+//				.currentThread().getStackTrace()[1].getFileName(), Thread
+//				.currentThread().getStackTrace()[1].getLineNumber(), 
+//				target, res);
+//		String msg;
+		msg = String.format(Locale.JAPAN, "[%s : %d] ############### abc/acb ###############", 
+				Thread
+				.currentThread().getStackTrace()[1].getFileName(), Thread
+				.currentThread().getStackTrace()[1].getLineNumber());
+
+		System.out.println(msg);
+		
+		String res = Methods.perm(target, s1, s2);
+		
+		
+		msg = String.format(Locale.JAPAN, 
+				"[%s : %d] (s1=%s, s2=%s)target => %s / result => %s", 
+					Thread
+					.currentThread().getStackTrace()[1].getFileName(), Thread
+					.currentThread().getStackTrace()[1].getLineNumber(), 
+					s1, s2, target, res);
+
+		System.out.println(msg);
+
+		///////////////////////////////////
+		//
+		// abc/bca * abc/bac
+		//
+		///////////////////////////////////
+		msg = String.format(Locale.JAPAN, 
+				"[%s : %d] ############### abc/bca * abc/bac ###############", 
+				Thread
+				.currentThread().getStackTrace()[1].getFileName(), Thread
+				.currentThread().getStackTrace()[1].getLineNumber());
+
+		System.out.println(msg);
+
+		s1 = "abc";
+		s2 = "bca";
+
+		res = Methods.perm(target, s1, s2);
+		
+//		String msg;
+		msg = String.format(Locale.JAPAN, "[%s : %d] (s1=%s, s2=%s)target => %s / result => %s", Thread
+				.currentThread().getStackTrace()[1].getFileName(), Thread
+				.currentThread().getStackTrace()[1].getLineNumber(), 
+				s1, s2, target, res);
+
+		System.out.println(msg);
+
+		// abc/bac
+		s1 = "abc";
+		s2 = "bac";
+
+		res = Methods.perm(res, s1, s2);
+		
+//		String msg;
+		msg = String.format(Locale.JAPAN, "[%s : %d] (s1=%s, s2=%s)target => %s / result => %s", Thread
+				.currentThread().getStackTrace()[1].getFileName(), Thread
+				.currentThread().getStackTrace()[1].getLineNumber(), 
+				s1, s2, target, res);
+
+		System.out.println(msg);
+		
+		
+
+	}
+	
 	public static void 
 	permu(String str) {
 		
 		String[] chars = str.split("");
 		chars = Arrays.copyOfRange(chars, 1, chars.length);
 		
+		String target = "bac";
+		String s1 = "abc";
+		String s2 = "bca";
 		
-		
+		Methods.perm(target, s1, s2);
 		
 //		String str_new = StringUtils.join(chars, "-");
 ////		String str_new_2 = StringUtils.join(chars, "-");
