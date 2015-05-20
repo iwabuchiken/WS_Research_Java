@@ -128,7 +128,8 @@ public class Galois {
 
 		System.out.println(msg);
 		
-		String res = Methods.perm(target, s1, s2);
+		String res = Methods.perm_V2(target, s1, s2);
+//		String res = Methods.perm(target, s1, s2);
 		
 		
 		msg = String.format(Locale.JAPAN, 
@@ -156,7 +157,8 @@ public class Galois {
 		s1 = "abc";
 		s2 = "bca";
 
-		res = Methods.perm(target, s1, s2);
+		res = Methods.perm_V2(target, s1, s2);
+//		res = Methods.perm(target, s1, s2);
 		
 //		String msg;
 		msg = String.format(Locale.JAPAN, "[%s : %d] (s1=%s, s2=%s)target => %s / result => %s", Thread
@@ -170,19 +172,20 @@ public class Galois {
 		s1 = "abc";
 		s2 = "bac";
 
-		res = Methods.perm(res, s1, s2);
+		String res_2 = Methods.perm_V2(res, s1, s2);
+//		res = Methods.perm(res, s1, s2);
 		
 //		String msg;
 		msg = String.format(Locale.JAPAN, "[%s : %d] (s1=%s, s2=%s)target => %s / result => %s", Thread
 				.currentThread().getStackTrace()[1].getFileName(), Thread
 				.currentThread().getStackTrace()[1].getLineNumber(), 
-				s1, s2, target, res);
+				s1, s2, res, res_2);
 
 		System.out.println(msg);
 		
 		
 
-	}
+	}//ops_1
 	
 	public static void 
 	permu(String str) {

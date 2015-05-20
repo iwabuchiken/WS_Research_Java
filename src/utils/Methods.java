@@ -144,7 +144,8 @@ public class Methods {
 		String[] chars_After = after.split("");
 		chars_After = Arrays.copyOfRange(chars_After, 1, chars_After.length);
 		
-		Map<String , String> map_1 = new HashMap<String, String>();
+		Map<String , String> map_1 = new TreeMap<String, String>();
+//		Map<String , String> map_1 = new HashMap<String, String>();
 		
 		for (int i = 0; i < chars_After.length; i++) {
 			
@@ -309,6 +310,157 @@ public class Methods {
 		
 	}
 
+	/*******************************
+	 * perm_V2<br>
+	 * Example<br>
+	 * before = "abc"<br>
+	 * after = "acb"<br>
+	 * target = "bac"<br>
+	 * result = "cab"
+	 *******************************/
+	public static String 
+	perm_V2(String target, String before, String after) {
+//		public static String perm(String s1, String s2) {
+		
+		///////////////////////////////////
+		//
+		// validate
+		//
+		///////////////////////////////////
+		if (before.length() != after.length()) {
+			
+			String msg;
+			msg = String.format(Locale.JAPAN, "[%s : %d] before/after => length not equal: %d/%d", Thread
+					.currentThread().getStackTrace()[1].getFileName(), Thread
+					.currentThread().getStackTrace()[1].getLineNumber(), 
+					before.length(), after.length());
+			
+			System.out.println(msg);
+			
+			return null;
+			
+		}
+		
+		///////////////////////////////////
+		//
+		// report
+		//
+		///////////////////////////////////
+		String msg;
+		
+//		String msg;
+		msg = String.format(Locale.JAPAN, 
+				"[%s : %d] ----------------- Starting perm... -------------", 
+				Thread
+				.currentThread().getStackTrace()[1].getFileName(), Thread
+				.currentThread().getStackTrace()[1].getLineNumber());
+		
+		System.out.println(msg);
+		
+		
+		msg = String.format(Locale.JAPAN, "[%s : %d] target = %s / before = %s / after = %s", Thread
+				.currentThread().getStackTrace()[1].getFileName(), Thread
+				.currentThread().getStackTrace()[1].getLineNumber(), target, before, after);
+		
+		System.out.println(msg);
+		
+		
+		///////////////////////////////////
+		//
+		// map: 1
+		//
+		///////////////////////////////////
+		String[] chars_Before = before.split("");
+		chars_Before = Arrays.copyOfRange(chars_Before, 1, chars_Before.length);
+		
+		String[] chars_After = after.split("");
+		chars_After = Arrays.copyOfRange(chars_After, 1, chars_After.length);
+		
+		Map<String , String> map_1 = new TreeMap<String, String>();
+//		Map<String , String> map_1 = new HashMap<String, String>();
+		
+		for (int i = 0; i < chars_After.length; i++) {
+			
+			map_1.put(chars_Before[i], chars_After[i]);
+			
+		}
+		
+		//report
+//		String msg;
+		msg = String.format(Locale.JAPAN, 
+				"[%s : %d] **************** map_1 ****************", 
+				Thread
+				.currentThread().getStackTrace()[1].getFileName(), Thread
+				.currentThread().getStackTrace()[1].getLineNumber());
+		
+		System.out.println(msg);
+		
+		Methods.report_Map(map_1);
+		
+		///////////////////////////////////
+		//
+		// map: 2
+		//
+		///////////////////////////////////
+		String[] chars_Before_2 = target.split("");
+		chars_Before_2 = Arrays.copyOfRange(chars_Before_2, 1, chars_Before_2.length);
+		
+		String[] chars_After_2 = new String[chars_Before_2.length];
+		
+		String s1 = null, s2 = null;
+		
+		for (int i = 0; i < chars_Before_2.length; i++) {
+			
+			s1 = chars_Before_2[i];
+			
+			s2 = map_1.get(s1);
+			
+			chars_After_2[i] = s2;
+			
+		}
+		
+		String target_new = StringUtils.join(chars_After_2, "");
+		
+//		String msg;
+		msg = String.format(Locale.JAPAN, "[%s : %d] target_new => %s", Thread
+				.currentThread().getStackTrace()[1].getFileName(), Thread
+				.currentThread().getStackTrace()[1].getLineNumber(), target_new);
+
+		System.out.println(msg);
+		
+		
+		///////////////////////////////////
+		//
+		// return
+		//
+		///////////////////////////////////
+		return target_new;
+		
+//		StringBuilder sb = new StringBuilder();
+//		
+//		//REF http://beginnersbook.com/2013/12/how-to-sort-hashmap-in-java-by-keys-and-values/
+//		Set set = map_2_new.entrySet();
+//		
+//		Iterator it = set.iterator();
+//		
+//		Map.Entry me2 = null;
+//		
+//		while(it.hasNext()) {
+//			
+//			me2 = (Map.Entry)it.next();
+//			
+//			sb.append(me2.getValue());
+//			
+////             System.out.print(me2.getKey() + ": ");
+////             
+////             System.out.println(me2.getValue());
+//			
+//		}
+//		
+//		return sb.toString();
+		
+	}
+	
 	public static void 
 	report_Map(Map<String, String> map) {
 		
