@@ -1,46 +1,46 @@
 
 package utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.SocketException;
-import java.net.URLEncoder;
-import java.nio.channels.FileChannel;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 
 
 
 
+
+
+
+
+
+import com.opencsv.CSVReader;
+
+
+
+
+
+
+
+
+
+
+
+import com.opencsv.CSVWriter;
 
 
 // Apache
@@ -144,6 +144,7 @@ public class Methods {
 		String[] chars_After = after.split("");
 		chars_After = Arrays.copyOfRange(chars_After, 1, chars_After.length);
 		
+		//REF http://tutorialswithexamples.com/java-map-and-hashmap-tutorial-with-examples/
 		Map<String , String> map_1 = new TreeMap<String, String>();
 //		Map<String , String> map_1 = new HashMap<String, String>();
 		
@@ -492,6 +493,221 @@ public class Methods {
 
 		
 	}//report_Map(Map<String, String> map)
+
+	/*******************************
+	 * R.55<br>
+	 * @return
+	 * String[][]
+	 *******************************/
+	public static String[][]
+	swap_RowCol(String fpath) {
+		
+		try {
+			
+			//REF http://howtodoinjava.com/2014/08/12/parse-read-write-csv-files-opencsv-tutorial/#read
+			//REF referer http://stackoverflow.com/questions/101100/csv-api-for-java answered Sep 19 '08 at 21:10
+			CSVReader r = new CSVReader(new FileReader(fpath));
+			
+			String[] nextLine;
+			
+			List<String[]> list_Orig = new ArrayList<String[]>();
+			
+			int count = 0;
+			
+			while ((nextLine = r.readNext()) != null) {
+				
+				if (nextLine != null) {
+					//Verifying the read data here
+//						System.out.println(Arrays.toString(nextLine));
+
+					list_Orig.add(nextLine);
+					
+					count ++;
+					
+					String msg;
+					msg = String.format(Locale.JAPAN, "[%s : %d] line %d: %d columns", Thread
+							.currentThread().getStackTrace()[1].getFileName(),
+							Thread.currentThread().getStackTrace()[1]
+									.getLineNumber(), count, nextLine.length);
+	
+					System.out.println(msg);
+				
+					
+				}
+			}
+		
+			String msg;
+			msg = String.format(Locale.JAPAN, "[%s : %d] csv list => %d", Thread
+//					msg = String.format(Locale.JAPAN, "[%s : %d] csv lines => %d", Thread
+					.currentThread().getStackTrace()[1].getFileName(), Thread
+					.currentThread().getStackTrace()[1].getLineNumber(), list_Orig.size());
+//			.currentThread().getStackTrace()[1].getLineNumber(), count);
+
+			System.out.println(msg);
+			
+			///////////////////////////////////
+			//
+			// swap
+			//
+			///////////////////////////////////
+			int numOf_Cols = list_Orig.get(0).length;
+			
+//			String msg;
+			msg = String.format(Locale.JAPAN, "[%s : %d] numOf_Cols = %d", Thread
+					.currentThread().getStackTrace()[1].getFileName(), Thread
+					.currentThread().getStackTrace()[1].getLineNumber(), numOf_Cols);
+
+			System.out.println(msg);
+			
+			String[][] ary_new = new String[numOf_Cols][list_Orig.size()];
+
+			String[] tmp;
+			
+			for (int i = 0; i < list_Orig.size(); i++) {
+				
+				tmp = list_Orig.get(i);
+				
+				for (int j = 0; j < numOf_Cols; j++) {
+					
+					ary_new[j][i] = tmp[j];
+//					ary_new[j][i] = tmp[i];
+					
+				}
+				
+			}
+
+			//report
+			Methods.report_Array_MultiDim(ary_new);
+			
+			///////////////////////////////////
+			//
+			// msg
+			//
+			///////////////////////////////////
+			r.close();
+			
+			return ary_new;
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+			return null;
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			return null;
+			
+		}
+		
+	}//swap_RowCol(String fpath)
+
+	private static void 
+	report_Array_MultiDim(String[][] ary_new) {
+		// TODO Auto-generated method stub
+
+		int numOf_Rows = ary_new.length;
+		int numOf_Cols = ary_new[0].length;
+		
+		String msg;
+		msg = String.format(Locale.JAPAN, "[%s : %d] ary_new: rows %d / cols %d", Thread
+				.currentThread().getStackTrace()[1].getFileName(), Thread
+				.currentThread().getStackTrace()[1].getLineNumber(), 
+				numOf_Rows, numOf_Cols);
+		
+				//=> year/211863427/378699/337898/66280/166643
+		
+	//	0, StringUtils.join(list_Orig.get(0), "/"));
+	
+		System.out.println(msg);
+
+		///////////////////////////////////
+		//
+		// contents
+		//
+		///////////////////////////////////
+		for (int i = 0; i < numOf_Rows; i++) {
+			
+//			String msg;
+			msg = String.format(Locale.JAPAN, "[%s : %d] row[%d] = %s", Thread
+					.currentThread().getStackTrace()[1].getFileName(), Thread
+					.currentThread().getStackTrace()[1].getLineNumber(), 
+					i, StringUtils.join(ary_new[i], ","));
+
+			System.out.println(msg);
+			
+			
+		}
+		
+		
+	}
+
+	
+	public static int 
+	create_CSV(String[][] ary_new, String fpath_Dst) {
+		// TODO Auto-generated method stub
+		
+		try {
+			
+			CSVWriter w = new CSVWriter(new FileWriter(fpath_Dst));
+			
+			///////////////////////////////////
+			//
+			// prep: list
+			//
+			///////////////////////////////////
+			List<String[]> list = new ArrayList<String[]>();
+			
+			int numOf_Rows = ary_new.length;
+			
+			String[] line;
+			
+			for (int i = 0; i < numOf_Rows; i++) {
+				
+				line = ary_new[i];
+				
+				list.add(line);
+				
+			}
+			
+//			String msg;
+//			msg = String.format(Locale.JAPAN, "[%s : %d] list built => %d lines", Thread
+//					.currentThread().getStackTrace()[1].getFileName(), Thread
+//					.currentThread().getStackTrace()[1].getLineNumber(), list.size());
+//
+//			System.out.println(msg);
+			
+			///////////////////////////////////
+			//
+			// write
+			//
+			///////////////////////////////////
+			w.writeAll(list);
+
+			boolean res = w.checkError();
+			
+			String msg;
+			msg = String.format(Locale.JAPAN, "[%s : %d] write all => %s", Thread
+					.currentThread().getStackTrace()[1].getFileName(), Thread
+					.currentThread().getStackTrace()[1].getLineNumber(), res);
+
+			System.out.println(msg);
+			
+			w.close();
+			
+			return 0;
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+			return -1;
+			
+		}
+		
+	}//create_CSV(String[][] ary_new, String fpath_Dst)
 	
 }//public class Methods
 
