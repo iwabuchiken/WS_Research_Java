@@ -28,6 +28,7 @@ import java.util.TreeMap;
 
 
 
+
 import com.opencsv.CSVReader;
 
 
@@ -41,6 +42,7 @@ import com.opencsv.CSVReader;
 
 
 import com.opencsv.CSVWriter;
+
 
 
 // Apache
@@ -708,7 +710,404 @@ public class Methods {
 		}
 		
 	}//create_CSV(String[][] ary_new, String fpath_Dst)
+
+	/*******************************
+	 * prettify: http://www.customs.go.jp/toukei/suii/html/data/d61fa.csv
+	 *******************************/
+	public static void ops_V_1_2__Imports() {
+		// TODO Auto-generated method stub
+		///////////////////////////////////
+		//
+		// vars
+		//
+		///////////////////////////////////
+		String dpath = "data";
+		
+		String fname_Src_trunk = "R.55.#6.imports";
+//		String fname_Src_trunk = "R.78.v_1_1.LNG-price";
+		
+		String ext = ".csv";
+//		String ext = ".txt";
+		
+		String fname_Dst_trunk = fname_Src_trunk + ".PROCESSED";
+//		String fname_Dst_trunk = fname_Src_trunk + "PROCESSED";
+		
+		String fpath_Src = dpath + "/" + fname_Src_trunk + ext;
+		
+		String fpath_Dst = dpath + "/" + fname_Dst_trunk + ext;
+		
+		String fpath_Dst_csv = dpath + "/" + fname_Dst_trunk + ".CSV" + ext;
+		
+		///////////////////////////////////
+		//
+		// read csv
+		//
+		///////////////////////////////////
+		try {
+			
+			CSVReader r = new CSVReader(new FileReader(fpath_Src), '\t');
+//			CSVReader r = new CSVReader(new FileReader(fpath_Src));
+
+			///////////////////////////////////
+			//
+			// names
+			//
+			///////////////////////////////////
+			int skipp = 4;
+//			int skipp = 2;
+//			int skipp = 3;
+			
+			for (int i = 0; i < skipp; i++) r.readNext();
+
+			String[] cols = r.readNext();	// 報道発表品目名
+
+//			cols[0] = "Years";
+			
+			String[] cols_Target = Arrays.copyOfRange(cols, 0, cols.length - 1);
+//			String[] cols_Target = Arrays.copyOfRange(cols, 1, cols.length - 1);
+//			String[] cols_Target = Arrays.copyOfRange(cols, 1, cols.length);
+			
+//			for (int i = 0; i < cols_Target.length; i++) {
+//				
+//				String msg;
+//				msg = String.format(Locale.JAPAN, "[%s : %d] cols_Target[%d] = %s", Thread
+//						.currentThread().getStackTrace()[1].getFileName(),
+//						Thread.currentThread().getStackTrace()[1]
+//								.getLineNumber(), i, cols_Target[i]);
+//
+//				System.out.println(msg);
+//				
+//				
+//			}
+			
+//			String msg;
+//			msg = String.format(Locale.JAPAN, "[%s : %d] cols_Target => %d", Thread
+//					.currentThread().getStackTrace()[1].getFileName(), Thread
+//					.currentThread().getStackTrace()[1].getLineNumber(), cols_Target.length);
+//
+//			System.out.println(msg);
+			
+			
+			///////////////////////////////////
+			//
+			// build: data
+			//
+			///////////////////////////////////
+			List<String[]> list = new ArrayList<String[]>();
+			
+			list.add(cols_Target);
+
+//			//
+//			cols = r.readNext();	// 概況品名
+//
+//			cols_Target = Arrays.copyOfRange(cols, 0, cols.length - 1);
+//			
+//			list.add(cols_Target);
+			
+			// data
+			skipp = 3;
+			
+			for (int i = 0; i < skipp; i++) r.readNext();
+			
+			cols = r.readNext();
+			
+			String[] cols_new = null;
+			
+			int numOf_cols;
+			
+			int j = 1;	// index for cols_new
+			
+			//debug
+			if (cols != null) {
+				
+				for (int i = 0; i < cols.length; i++) {
+					
+					String msg;
+					msg = String.format(Locale.JAPAN, "[%s : %d] cols[%d] = %s", Thread
+							.currentThread().getStackTrace()[1].getFileName(),
+							Thread.currentThread().getStackTrace()[1]
+									.getLineNumber(), i, cols[i]);
+
+					System.out.println(msg);
+					
+				}
+				
+			} else {
+				
+				String msg;
+				msg = String.format(Locale.JAPAN, "[%s : %d] cols => null", Thread
+						.currentThread().getStackTrace()[1].getFileName(),
+						Thread.currentThread().getStackTrace()[1]
+								.getLineNumber());
+
+				System.out.println(msg);
+				
+			}
+			
+			///////////////////////////////////
+			//
+			// data: 1st line
+			//
+			///////////////////////////////////
+			while(cols != null) {
+				j = 1;
+				
+				numOf_cols = cols.length;
+				
+				cols_new = new String[numOf_cols/2 + 2];
+				
+				cols_new[0] = cols[0];
+				
+				for (int i = 1; i < numOf_cols; i++) {
+			//		for (int i = 1; i < numOf_cols - 1; i++) {
+			//		for (int i = 1; i < numOf_cols; i++) {
+					
+					if (i % 2 == 1) {
+	//					if (i % 2 == 0) {
+						
+						cols_new[j] = cols[i];
 	
+						String msg;
+						msg = String.format(Locale.JAPAN, "[%s : %d] add: cols_new[%d] = %s", Thread
+								.currentThread().getStackTrace()[1].getFileName(),
+								Thread.currentThread().getStackTrace()[1]
+										.getLineNumber(), j, cols_new[j]);
+	
+						System.out.println(msg);
+						
+						
+						j ++;
+						
+						
+					}
+					
+				}//for (int i = 1; i < numOf_cols; i++)
+				
+				list.add(cols_new);
+			
+				// next line
+				cols = r.readNext();
+				
+			}//while(cols != null)
+			
+//			while(cols != null) {
+//				
+//				// init j
+//				j = 1;
+//				
+//				numOf_cols = cols.length;
+//				
+//				String msg;
+//				msg = String.format(Locale.JAPAN, "[%s : %d] numOf_cols = %d", Thread
+//						.currentThread().getStackTrace()[1].getFileName(),
+//						Thread.currentThread().getStackTrace()[1]
+//								.getLineNumber(), numOf_cols);
+//
+//				System.out.println(msg);
+//				
+//				
+//				cols_new = new String[numOf_cols/2 + 2];	// half of the cols + "year" col
+////				cols_new = new String[numOf_cols/2 + 1];	// half of the cols + "year" col
+//				
+////				String msg;
+//				msg = String.format(Locale.JAPAN, 
+//						"[%s : %d] length: cols = %d, cols_new = %d, numOf_cols = %d", 
+//						Thread.currentThread().getStackTrace()[1].getFileName(),
+//						Thread.currentThread().getStackTrace()[1]
+//								.getLineNumber(), 
+//						cols.length, cols_new.length, numOf_cols);
+//
+//				System.out.println(msg);
+//				
+//				
+//				cols_new[0] = cols[0];
+//				
+//				for (int i = 1; i < numOf_cols; i++) {
+////					for (int i = 1; i < numOf_cols - 1; i++) {
+////					for (int i = 1; i < numOf_cols; i++) {
+//					
+//					if (i % 2 == 0) {
+//						
+//						cols_new[j] = cols[i];
+//							
+//						j ++;
+//						
+////						String msg;
+//						msg = String.format(Locale.JAPAN, "[%s : %d] i = %d, j = %d",
+//								Thread.currentThread().getStackTrace()[1]
+//										.getFileName(), Thread.currentThread()
+//										.getStackTrace()[1].getLineNumber(),
+//								i, j);
+//
+//						System.out.println(msg);
+//						
+//						
+//					}
+//					
+//				}
+//				
+//				// add cols
+//				list.add(cols_new);
+//				
+//				// next line
+//				cols = r.readNext();
+//				
+//			}//while(cols != null)
+			
+//			String msg;
+//			msg = String.format(Locale.JAPAN, "[%s : %d] cols_new(1) => %d", Thread
+//					.currentThread().getStackTrace()[1].getFileName(), Thread
+//					.currentThread().getStackTrace()[1].getLineNumber(), list.get(1).length);
+//
+//			System.out.println(msg);
+//			
+//			msg = String.format(Locale.JAPAN, "[%s : %d] cols_new(10) => %d", Thread
+//					.currentThread().getStackTrace()[1].getFileName(), Thread
+//					.currentThread().getStackTrace()[1].getLineNumber(), list.get(10).length);
+//			
+//			System.out.println(msg);
+//			
+//			msg = String.format(Locale.JAPAN, "[%s : %d] list => %d", Thread
+//					.currentThread().getStackTrace()[1].getFileName(), Thread
+//					.currentThread().getStackTrace()[1].getLineNumber(), list.size());
+//			
+//			System.out.println(msg);
+//			
+//			int tmp = list.get(10).length;
+//			
+//			String[] tmp_ary = list.get(10);
+//			
+//			for (int i = 0; i < tmp; i++) {
+//				
+////				String msg;
+//				msg = String.format(Locale.JAPAN, "[%s : %d] list.get(10) col[%d] = %s", Thread
+//						.currentThread().getStackTrace()[1].getFileName(),
+//						Thread.currentThread().getStackTrace()[1]
+//								.getLineNumber(), i, tmp_ary[i]);
+//
+//				System.out.println(msg);
+//				
+//				
+//			}
+			
+			
+			///////////////////////////////////
+			//
+			// close
+			//
+			///////////////////////////////////
+			r.close();
+
+			
+			
+			///////////////////////////////////
+			//
+			// save: data
+			//
+			///////////////////////////////////
+			CSVWriter w = new CSVWriter(new FileWriter(fpath_Dst_csv), '\t');
+//			CSVWriter w = new CSVWriter(new FileWriter(fpath_Dst_csv), '\t');
+//			CSVWriter w = new CSVWriter(new FileWriter(fpath_Dst_csv));
+			
+			w.writeAll(list);
+			
+			w.close();
+			
+			String msg;
+			msg = String.format(Locale.JAPAN, "[%s : %d] csv => written: %s", Thread
+					.currentThread().getStackTrace()[1].getFileName(), Thread
+					.currentThread().getStackTrace()[1].getLineNumber(), fpath_Dst_csv);
+
+			System.out.println(msg);
+			
+			
+//			int skipp = 7;		// first X lines to omit
+//			
+//			for (int i = 0; i < skipp; i++) {
+//				
+//				r.readNext();
+//				
+//			}
+//			
+//			String[] cols = r.readNext();
+//			
+//			String msg;
+//			msg = String.format(Locale.JAPAN, "[%s : %d] cols => %d", Thread
+//					.currentThread().getStackTrace()[1].getFileName(), Thread
+//					.currentThread().getStackTrace()[1].getLineNumber(), cols.length);
+//
+//			System.out.println(msg);
+			
+//			for (int i = 0; i < 10; i++) {
+//				
+////				String msg;
+//				msg = String.format(Locale.JAPAN, "[%s : %d] col[%d] = %s", Thread
+//						.currentThread().getStackTrace()[1].getFileName(),
+//						Thread.currentThread().getStackTrace()[1]
+//								.getLineNumber(), i, cols[i]);
+//
+//				System.out.println(msg);
+//				
+//				
+//			}
+			
+////			String msg;
+//			msg = String.format(Locale.JAPAN, "[%s : %d] csv => closed", Thread
+//					.currentThread().getStackTrace()[1].getFileName(), Thread
+//					.currentThread().getStackTrace()[1].getLineNumber());
+//
+//			System.out.println(msg);
+			
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+//		///////////////////////////////////
+//		//
+//		// swap
+//		//
+//		///////////////////////////////////
+//		String[][] ary_new = Methods.swap_RowCol(fpath_Dst);
+//		
+		///////////////////////////////////
+		//
+		// validate
+		//
+		///////////////////////////////////
+		
+//		if (ary_new == null) {
+//			
+//			String msg;
+//			msg = String.format(Locale.JAPAN, "[%s : %d] ary_new => null", Thread
+//					.currentThread().getStackTrace()[1].getFileName(), Thread
+//					.currentThread().getStackTrace()[1].getLineNumber());
+//			
+//			System.out.println(msg);
+//			
+//			return;
+//			
+//		}
+		
+		///////////////////////////////////
+		//
+		// new csv
+		//
+		///////////////////////////////////
+//		String keyword = "SWPPED";
+		
+//		String fpath_Dst_csv = dpath + "/" + fname + "." + keyword + ext;
+		//String fpath_Dst = "data/R.55.oil.SWPPED.csv";
+		
+//		Methods.create_CSV(ary_new, fpath_Dst_csv);
+		
+	}//ops_V_1_2__Imports
+
 }//public class Methods
 
 /*
